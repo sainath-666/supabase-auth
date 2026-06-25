@@ -52,6 +52,22 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    try {
+      const { error: signInError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+      if (signInError) throw signInError;
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Google Sign-In failed.');
+    }
+  };
+
   if (loading || user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950">
@@ -166,6 +182,45 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-800" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-slate-900 px-2 text-slate-500 font-medium">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                className="w-full flex justify-center items-center gap-2 py-2.5 px-4 bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-900 focus:outline-none transition cursor-pointer shadow-md"
+              >
+                <svg className="w-5 h-5 mr-1" viewBox="0 0 24 24">
+                  <path
+                    fill="#EA4335"
+                    d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582l3.51-3.51C17.827 1.145 15.055 0 12 0 7.34 0 3.327 2.673 1.345 6.573l3.921 3.192z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M23.49 12.273c0-.796-.068-1.636-.205-2.436H12v4.618h6.49a5.59 5.59 0 0 1-2.427 3.673l3.818 2.964c2.23-2.054 3.51-5.08 3.51-8.82z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.266 14.235 1.345 17.427A11.954 11.954 0 0 0 12 24c3.082 0 5.864-1.018 7.882-2.773l-3.818-2.964a7.123 7.123 0 0 1-4.064 1.155c-3.69 0-6.818-2.49-7.927-5.964z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M1.345 6.573A11.95 11.95 0 0 0 0 12c0 1.945.464 3.79 1.282 5.427l4.036-3.136c-.236-.69-.364-1.427-.364-2.29 0-.828.118-1.618.327-2.31L1.345 6.573z"
+                  />
+                </svg>
+                Sign in with Google
+              </button>
+            </div>
+          </div>
 
           <div className="mt-6 border-t border-slate-800 pt-6">
             <div className="text-xs text-slate-500 space-y-2 leading-relaxed">

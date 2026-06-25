@@ -75,6 +75,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen to changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session) {
+        // If there's a pending role from Google Sign-In, update user metadata
+        const pendingRole = localStorage.getItem('google_oauth_role');
+        if (pendingRole) {
+          localStorage.removeItem('google_oauth_role');
+          try {
+            await supabase.auth.updateUser({
+              data: { role: pendingRole }
+            });
+            // Refresh session to generate a new JWT with updated metadata
+            const { data: { session: refreshedSession } } = await supabase.auth.refreshSession();
+            if (refreshedSession) {
+              session = refreshedSession;
+            }
+          } catch (err) {
+            console.error('Failed to update Google OAuth user role:', err);
+          }
+        }
         setUser(session.user);
         decodeJwt(session.access_token);
         await fetchPermissions();
