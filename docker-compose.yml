@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  cerbos:
+    image: cerbos/cerbos:0.34.0
+    container_name: cerbos-auth-demo-cerbos
+    ports:
+      - "3592:3592"
+      - "3593:3593"
+    volumes:
+      - ./cerbos:/policies
+    command: ["server", "--log-level=INFO"]

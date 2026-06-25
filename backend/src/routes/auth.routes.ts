@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { AuthController } from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/authenticate.js';
+
+const router = Router();
+const authController = new AuthController();
+
+router.post('/signup', authController.signup.bind(authController));
+router.post('/login', authController.login.bind(authController));
+router.get('/profile', authenticate, authController.profile.bind(authController));
+router.get('/me/permissions', authenticate, authController.permissions.bind(authController));
+
+export default router;
