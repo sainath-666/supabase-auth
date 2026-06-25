@@ -100,16 +100,16 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 
 ## Step 4: Run the Cerbos Authorization Engine
 
-Cerbos runs as an independent policy engine. You can run it either via **Docker** or as a **local Windows binary** (without Docker).
+Cerbos runs as an independent policy engine. You can run it either via **Docker** or using **WSL (Windows Subsystem for Linux)** if Docker is not installed on your system.
 
-### Option A: Running without Docker (Windows PowerShell)
-We have included a script [start-cerbos.ps1](file:///d:/SAIIII/git/supabase-auth/start-cerbos.ps1) that automatically downloads the official Cerbos binary and starts it:
+### Option A: Running without Docker (Using WSL)
+Because Cerbos does not distribute a native Windows `.exe` binary, the setup executes the Linux binary through WSL:
 1. Open PowerShell in the workspace root directory.
-2. Run the script:
+2. Run the startup script:
    ```powershell
    .\start-cerbos.ps1
    ```
-3. This downloads Cerbos v0.34.0, extracts it inside the `cerbos/` folder, and runs the server pointing to your policies.
+3. The script verifies WSL, downloads the official Linux binary for Cerbos `v0.34.0`, extracts it into the `cerbos_bin/` folder, and boots the engine pointing to your policies.
 
 ### Option B: Running with Docker
 1. Open your terminal at the workspace root directory.
